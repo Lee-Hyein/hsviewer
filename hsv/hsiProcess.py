@@ -5,7 +5,7 @@ from loguru import logger
 import cv2 
 from scipy.signal import savgol_filter
 
-csv_df = pd.read_csv('C:/Users/leehy/Documents/workspace/hsviewer/Method-8_beta-coefficient_value.csv')
+csv_df = pd.read_csv('/Users/hyein/Documents/workspace/hsviewer-1/Method-8_beta-coefficient_value.csv')
 # csv_df = pd.read_csv('beta-coefficient_value.csv')
 # df = pd.DataFrame(csv_df)
 # print(df)

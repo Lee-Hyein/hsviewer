@@ -5,7 +5,7 @@ from loguru import logger
 
 from PySide6 import QtWidgets, _git_pyside_version
 import qdarktheme
-
+from startingDialog import StartingDialog
 from app import MainWindow
 
 __appname__ = "hsviewer"
@@ -20,6 +20,9 @@ if __name__ == "__main__":
     qApp = QtWidgets.QApplication(sys.argv)
     qApp.setStyleSheet(qdarktheme.load_stylesheet('dark'))
     qApp.setApplicationName(__appname__)
+    startingDialog = StartingDialog(__appname__, __version__)
+    startingDialog.setWindowTitle(f"{__appname__} ({__version__})")
+    startingRes = startingDialog.exec()
 
     window = MainWindow(
         qApp, 
