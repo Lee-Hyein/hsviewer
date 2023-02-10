@@ -5,12 +5,13 @@ from loguru import logger
 import cv2 
 from scipy.signal import savgol_filter
 
-csv_df = pd.read_csv('/Users/hyein/Documents/workspace/hsviewer-1/Method-8_beta-coefficient_value.csv')
+csv_df = pd.read_csv('C:/Users/leehy/Documents/workspace/hsviewer-1/new_Method-8_beta-coefficient_value.csv')
 # csv_df = pd.read_csv('beta-coefficient_value.csv')
 # df = pd.DataFrame(csv_df)
 # print(df)
-models = ['Y1/PC_05 (X-Variables)', 'Y2/PC_06 (X-Variables)', 'Y4/PC_07 (X-Variables)', 
-            'Y5/PC_06 (X-Variables)', 'Y8/PC_07 (X-Variables)']
+models = {'Y1/PC_05 (X-Variables)': 'total chlorophyll', 'Y2/PC_06 (X-Variables)':'total carotenoid', 
+         'Y4/PC_07 (X-Variables)' : 'total phenolic', 'Y5/PC_06 (X-Variables)' : 'total glucosinolate',
+         'Y6/PC_07 (X-Variables)':'total anthocyanin'}
 
 # models = ['Y1/PC_05 (X-Variables)', 'Y2/PC_06 (X-Variables)', 'Y4/PC_06 (X-Variables)', 
 #             'Y5/PC_06 (X-Variables)', 'Y6/PC_09 (X-Variables)']
@@ -26,7 +27,7 @@ def hsiProcess(hsiImage):
         modelValues = csv_df[model].to_numpy()
         modelValues = modelValues.astype(float)
         processedValues = np.dot(X_smooth_1, modelValues)
-        result[model] = processedValues
+        result[models[model]] = processedValues
     return result
 
 def ndviMaskProcess(hsiImage):
