@@ -124,7 +124,7 @@ class MainWindow(QtWidgets.QMainWindow):
         imageNormalized1 = cv2.normalize(image, np.zeros_like(image),0,255,cv2.NORM_MINMAX) 
         thumbnail = cv2.applyColorMap(imageNormalized1.astype(np.uint8),cv2.COLORMAP_JET)
         thumbnail = cv2.cvtColor(thumbnail, cv2.COLOR_BGR2RGB)
-        # imageColorized = plt.imshow(imageNormalized1, cmap='jet')
+
         row = RoiListSingleRectItemWidget('', modelName, average, min, max, self.roiListView, thumbnail, image)
         item.setSizeHint(row.minimumSizeHint())
         self.roiListView.setItemWidget(item, row)
@@ -175,15 +175,11 @@ class MainWindow(QtWidgets.QMainWindow):
         wavelength = hsi.getWavelength(self.openedFileDict['hdr'])
         res = hsiProcess.hsiProcess(self.openedFileDict['hsiArr'], self.openedFileDict['hdr']) 
         ndviMask = hsiProcess.ndviMaskProcess(self.openedFileDict['hsiArr'], self.openedFileDict['hdr'])
-        #normalizedNdviMask = cv2.normalize(ndviMask, np.zeros_like(ndviMask),0,255,cv2.NORM_MINMAX) 
-        #self.makeRightImage("NDVI MASK", normalizedNdviMask, False) # NDVI mask visualization
         for k, v in res.items(): 
-            #normalizedImage = cv2.normalize(v[3], np.zeros_like(v[3]),0,255,cv2.NORM_MINMAX)
             normalizedImage = hsiProcess.normalization(v)
             average = v[0]
             min = v[1]
             max = v[2]
-            #maskedImage = cv2.bitwise_and(normalizedImage, normalizedImage, mask=ndviMask.astype(np.uint8))
             self.makeRightImage(k ,normalizedImage, average, min, max, True)
 
         
