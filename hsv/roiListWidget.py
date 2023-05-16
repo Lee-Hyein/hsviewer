@@ -4,7 +4,7 @@ import util
 import plotWidget 
 
 class RoiListSingleRectItemWidget(QtWidgets.QWidget): 
-    def __init__(self, id, title, parent=None, imageThumbnail=None, imageData=None):
+    def __init__(self, id, title, average, min, max, parent=None, imageThumbnail=None, imageData=None):
         super(RoiListSingleRectItemWidget, self).__init__(parent)
 
         self.row = QtWidgets.QVBoxLayout()
@@ -18,6 +18,9 @@ class RoiListSingleRectItemWidget(QtWidgets.QWidget):
         self.id = id
         self.title = title 
         self.titleLabel = QtWidgets.QLabel(title)
+        self.average = average
+        self.min = min
+        self.max = max
         self.detailButton = QtWidgets.QPushButton("Detail")
 
         self.row.addWidget(self.titleLabel,0,)
@@ -39,10 +42,13 @@ class RoiListSingleRectItemWidget(QtWidgets.QWidget):
         
     def setTitle(self, title): 
         self.titleLabel.setText(title)
+    
+    def setAverage(self, average):
+        self.average.setText
 
     def showPlotWidget(self):
-        self.plotWidget = plotWidget.WidgetPlot(imageData = self.imageData, title = self.title)
-        self.plotWidget.resize(400, 500)
+        self.plotWidget = plotWidget.WidgetPlot(imageData = self.imageData ,title = self.title, average = self.average, min = self.min, max=self.max)
+        self.plotWidget.resize(650, 600)
         self.plotWidget.show()
 
 class RoiListWidget(QtWidgets.QListWidget): 

@@ -2,17 +2,35 @@ import spectral
 import pathlib 
 import cv2
 import numpy as np 
+import re
 
-band = [42, 28, 6]
+original_band = [42, 28, 6]
+portable_band  = [30, 34, 20]
+
+def getWavelength(file_path):
+    pattern = r"(?i)wavelength\s*=\s*\{([\s0-9,.]+)\}"
+    with open(file_path, "r") as file:
+        envi_text = file.read()
+    match = re.search(pattern, envi_text, flags=re.DOTALL)
+    if match:
+        wavelengths = match.group(1)
+        wavelengths = [float(x) for x in re.findall(r"[\d.]+", wavelengths)]
+        return(wavelengths)
+    else:
+        raise ValueError("Wavelengths not found in the file")
 
 def loadImage(hdrPath, hsiOrRawPath):
     hsiImage = spectral.io.envi.open(str(hdrPath),
                                      str(hsiOrRawPath))
-    rgbImage = spectral.get_rgb(hsiImage, band)
+    if len(getWavelength(hdrPath)) == 51:
+        rgbImage = spectral.get_rgb(hsiImage, portable_band)
+        rgbImage = (255*rgbImage).astype(np.uint8)
+        rgbImage = rgbImage + 60
+    else:
+        rgbImage = spectral.get_rgb(hsiImage, original_band)
+        rgbImage = (255*rgbImage).astype(np.uint8)
+        rgbImage = rgbImage + 30 
 
-    rgbImage = (255*rgbImage).astype(np.uint8)
-    # brightness 
-    rgbImage = rgbImage + 30 
     #rgbImage = cv2.cvtColor(rgbImage, cv2.COLOR_BGR2RGB)
     return (hsiImage, rgbImage)
 
